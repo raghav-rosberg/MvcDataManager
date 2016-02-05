@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcDataManager", "MvcDataManager\MvcDataManager.csproj", "{CEE5586C-33AB-4DEF-B76C-86CBFA942802}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{8A99BCBB-B495-40DC-982D-CA4EA07AC9BC}"
+	ProjectSection(SolutionItems) = preProject
+		Build.proj = Build.proj
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
+		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcDataManager.Model", "MvcDataManager.Model\MvcDataManager.Model.csproj", "{8C569457-A619-4A22-9FDD-E6EFDD5C58F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEE5586C-33AB-4DEF-B76C-86CBFA942802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE5586C-33AB-4DEF-B76C-86CBFA942802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE5586C-33AB-4DEF-B76C-86CBFA942802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE5586C-33AB-4DEF-B76C-86CBFA942802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C569457-A619-4A22-9FDD-E6EFDD5C58F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C569457-A619-4A22-9FDD-E6EFDD5C58F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C569457-A619-4A22-9FDD-E6EFDD5C58F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C569457-A619-4A22-9FDD-E6EFDD5C58F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
