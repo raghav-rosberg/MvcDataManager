@@ -32,11 +32,11 @@ namespace MvcDataManager
             get { return _dataContext.Set<T>(); }
         }
 
-        public RepositoryBase(DatabaseFactory dbFactory)
+        public RepositoryBase(IUnitOfWork unitOfWork)
         {
-            if (dbFactory == null) throw new ArgumentNullException("dbFactory");
-            if (dbFactory.DbContext == null) throw new Exception("Please set value for 'DBContext' using database factory setter 'SetDbContext'.");
-            _dataContext = dbFactory.DbContext;
+            if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
+            if (unitOfWork._dbContext == null) throw new Exception("Please intialize 'DBContext' of the Unit of Work object before using rapository base.");
+            _dataContext = unitOfWork._dbContext;
             _dataContext.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
         }
 
@@ -124,6 +124,7 @@ namespace MvcDataManager
 
     public interface IUnitOfWork: IDisposable
     {
+        DbContext _dbContext { get; set; }
         void Commit();
     }
 
@@ -134,44 +135,12 @@ namespace MvcDataManager
             _dbContext.SaveChanges();
         }
 
-        private readonly DbContext _dbContext;
+        public DbContext _dbContext { get; set; }
 
-        public UnitOfWork(DatabaseFactory dbFactory)
+        public UnitOfWork(DbContext dbContext)
         {
-            if (dbFactory == null) throw new ArgumentNullException("dbFactory");
-            if (dbFactory.DbContext == null) throw new Exception("Please set value for 'DBContext' using database factory setter 'SetDbContext'.");
-            _dbContext = dbFactory.DbContext;
-        }
-
-        protected override void DisposeCore()
-        {
-            if (_dbContext != null)
-                _dbContext.Dispose();
-        }
-    }
-
-    #endregion
-
-    #region Database Factory
-
-    public interface IDatabaseFactory : IDisposable
-    {
-        DbContext DbContext { get; }
-        DbContext SetDbContext { set; }
-    }
-
-    public class DatabaseFactory : Disposable, IDatabaseFactory
-    {
-        private DbContext _dbContext;
-
-        public DbContext DbContext
-        {
-            get { return _dbContext; }
-        }
-
-        public DbContext SetDbContext
-        {
-            set { _dbContext = value; }
+            if (dbContext == null) throw new ArgumentNullException("dbContext");
+            _dbContext = dbContext;
         }
 
         protected override void DisposeCore()

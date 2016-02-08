@@ -33,13 +33,14 @@ namespace MvcDataManager
 
     public class UserRepository<T> : Controller, IUserRepository<T> where T : DbContext, new()
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserStore<ApplicationUser, T> _userStore;
         private readonly IRepository<SecurityQuestion> _securityQuestionRepository;
         public UserRepository(IDataProtectionProvider dataProtectionProvider)
         {
             _userStore = new UserStore<ApplicationUser, T>();
-            var dbFactory = new DatabaseFactory { SetDbContext = new T() };
-            _securityQuestionRepository = new RepositoryBase<SecurityQuestion>(dbFactory);
+            _unitOfWork = new UnitOfWork(new T());
+            _securityQuestionRepository = new RepositoryBase<SecurityQuestion>(_unitOfWork);
             _userStore.UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
         }
 
