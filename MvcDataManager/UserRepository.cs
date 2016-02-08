@@ -10,7 +10,7 @@ using MvcDataManager.Model;
 
 namespace MvcDataManager
 {
-    public interface IUserRepository<T> : IController where T : DbContext, new()
+    public interface IUserRepository : IController
     {
         ApplicationUser GetById(string id);
         IEnumerable<ApplicationUser> GetAll();
@@ -31,16 +31,16 @@ namespace MvcDataManager
             string redirectController = "");
     }
 
-    public class UserRepository<T> : Controller, IUserRepository<T> where T : DbContext, new()
+    public class UserRepository : Controller, IUserRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserStore<ApplicationUser, T> _userStore;
+        private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IRepository<SecurityQuestion> _securityQuestionRepository;
-        public UserRepository(IDataProtectionProvider dataProtectionProvider)
+        public UserRepository(IDataProtectionProvider dataProtectionProvider, IUnitOfWork unitOfWork)
         {
-            _userStore = new UserStore<ApplicationUser, T>();
-            _unitOfWork = new UnitOfWork(new T());
-            _securityQuestionRepository = new RepositoryBase<SecurityQuestion>(_unitOfWork);
+            _userStore = new UserStore<ApplicationUser>(unitOfWork._dbContext);
+            _unitOfWork = unitOfWork;
+            _securityQuestionRepository = new RepositoryBase<SecurityQuestion>(unitOfWork);
             _userStore.UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
         }
 

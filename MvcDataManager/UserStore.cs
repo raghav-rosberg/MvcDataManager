@@ -7,23 +7,20 @@ namespace MvcDataManager
 {
     #region User Store
 
-    public interface IUserStore<T, TU>
+    public interface IUserStore<T>
         where T : IdentityUser
-        where TU : DbContext, new()
     {
         UserManager<T> UserManager { get; set; }
     }
 
-    public class UserStore<T, TU> : IUserStore<T, TU>
+    public class UserStore<T> : IUserStore<T>
         where T : IdentityUser
-        where TU : DbContext, new()
     {
         public UserManager<T> UserManager { get; set; }
 
-        public UserStore()
+        public UserStore(DbContext dbcontext)
         {
-            var dbContext = Activator.CreateInstance<TU>();
-            UserManager = new UserManager<T>(new UserStore<T>(dbContext))
+            UserManager = new UserManager<T>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<T>(dbcontext))
             {
                 PasswordValidator = new PasswordValidator
                 {
@@ -36,10 +33,9 @@ namespace MvcDataManager
             };
         }
 
-        public UserStore(PasswordValidator passwordValidator)
+        public UserStore(DbContext dbcontext, PasswordValidator passwordValidator)
         {
-            var dbContext = Activator.CreateInstance<TU>();
-            UserManager = new UserManager<T>(new UserStore<T>(dbContext))
+            UserManager = new UserManager<T>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<T>(dbcontext))
             {
                 PasswordValidator = passwordValidator ?? new PasswordValidator
                 {
